@@ -12,11 +12,10 @@ ratio = 4
 n_defined = False
 
 def help(message=""):
-    #print('rand: illegal option -- %s' % bad_arg.strip("-")[0])
     print
     if message != "":
         print(message)
-    print('usage: rand [-hqs] [-p <plot count>] [-r <plot ratio>] [list of ranges maxs...]')
+    print('usage: rand [-hqs] [-p <plot count>] [-r <plot ratio>] [-n <data size>] [list of ranges maxs...]')
     print('  -h | --help    Show this message')
     print('  -q | --quiet   Do now show plots on screen')
     print('  -s | --save    Save the plots to the computer')
@@ -65,6 +64,7 @@ if args == []:
     sys.exit(2)
     
 for i in args:
+    i = eval(i)
     if float(i) != int(i) or int(i) <= 1:
         help("rand: illegal argument -- %s All values must be integers greater than 1" % " ".join(args))
         sys.exit(2)
@@ -91,7 +91,7 @@ for r in args:
         it = 0
         while it < n:
             start = time()
-            xs += [randrange(r)]
+            xs += [randrange(r)] # <========= THIS BAD BOY RIGHT HERE
             ys += [(time() - start)*1000000]
             it += 1
         plt.plot(xs, ys, "ro")
@@ -102,13 +102,12 @@ for r in args:
     for p in all_plots:
         p.axis([-r*0.05,(r-1)*1.05,-my*0.05,my*1.05])
     f.subplots_adjust(hspace=0)
-    # plt.setp([a.get_xticklabels() for a in f.axes[:-1]], visible=False) I forgot what this does, and can't tell the difference without it
     if save:
         try:
             plt.savefig("./data/r%d.png" % r)
         except:
             mkdir("data")
-            plt.savefig("./data/r%d.png" % r)
+            plt.savefig("./data/r%ds%d.png" % (r, plots))
     if not quiet:
         plt.show()
     plt.clf()
