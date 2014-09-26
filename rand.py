@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from random import randrange
 from time import time
 import sys, getopt
+from os import mkdir
 
 to_gen = []
 save = False
@@ -64,7 +65,11 @@ for r in args:
     f.subplots_adjust(hspace=0)
     plt.setp([a.get_xticklabels() for a in f.axes[:-1]], visible=False)
     if save:
-        plt.savefig("/Users/joe/programs/random_data/data/r%d.png" % r)
+        try:
+            plt.savefig("./data/r%d.png" % r)
+        except:
+            mkdir("data")
+            plt.savefig("./data/r%d.png" % r)
     if not quiet:
         plt.show()
     plt.clf()
