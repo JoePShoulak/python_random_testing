@@ -16,13 +16,13 @@ def help(message=""):
     print
     if message != "":
         print(message)
-    print('usage: rand [-hqs] [-p <plot count>] [-r <plot ratio>] [list of values ...]')
+    print('usage: rand [-hqs] [-p <plot count>] [-r <plot ratio>] [list of ranges maxs...]')
     print('  -h | --help    Show this message')
     print('  -q | --quiet   Do now show plots on screen')
     print('  -s | --save    Save the plots to the computer')
-    print('  -p | --plots   Number of plots to be displayed (default=1, max=5)')
+    print('  -p | --plots   Number of plots to be displayed (default=1, min=1, max=5)')
     print('  -r | --ratio   Ratio between plot data sizes (default=4)')
-    print('  -n | --n-size  Number of data points in first graph (default=value for plot)')
+    print('  -n | --n-size  Number of data points in first graph (default=range max, min=1)')
     print
 
 args = sys.argv[1:]
@@ -40,13 +40,16 @@ for opt, arg in opts:
     elif opt in ('-s', "--save"):
         save = True
     elif opt in ('-p', "--plots"):
-        plots = int(arg)
-        if plots not in [1, 2, 3, 4, 5]:
-            help("rand: illegal argument -- plots=%d Maximum of 5 plots allowed" % plots)
+        if arg not in ["1", "2", "3", "4", "5"]:
+            help("rand: illegal argument -- plots=%s Must be an integer 1<=plots<=5" % arg)
             sys.exit(2)
+        plots = int(arg)    
     elif opt in ('-r', "--ratio"):
         if plots > 1:
             ratio = float(arg)
+            if ratio <= 0:
+                help("rand: illegal argument --ratio=%f Ratio must be positive")
+                sys.exit(2)
         else:
             help("rand: illegal argument -- ratio=%s Can't define ratio for one plot" % arg)
             sys.exit(2)
