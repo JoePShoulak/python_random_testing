@@ -61,7 +61,8 @@ for r in args:
         plt.ylabel("Time (mu s)")
         plt.xlabel("Value")
     for p in (plt.subplot(311), plt.subplot(312), plt.subplot(313)):
-        p.axis([0,r,0,my])
+        
+        p.axis([-r*0.05,r*1.05,-my*0.05,my*1.05])
     f.subplots_adjust(hspace=0)
     plt.setp([a.get_xticklabels() for a in f.axes[:-1]], visible=False)
     if save:
