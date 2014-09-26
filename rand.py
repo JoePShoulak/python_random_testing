@@ -17,12 +17,12 @@ def help(message=""):
     if message != "":
         print(message)
     print('usage: rand [-hqs] [-p <plot count>] [-r <plot ratio>] [list of values ...]')
-    print('\t-h | --help \t Show this message')
-    print('\t-q | --quiet \t Do now show plots on screen')
-    print('\t-s | --save \t Save the plots to the computer')
-    print('\t-p | --plots \t Number of plots to be displayed (default=1, max=5)')
-    print('\t-r | --ratio \t Ratio between plot data sizes (default=4)')
-    print('\t-n | --n-size \t Number of data points in first graph (default=value for plot)')
+    print('  -h | --help    Show this message')
+    print('  -q | --quiet   Do now show plots on screen')
+    print('  -s | --save    Save the plots to the computer')
+    print('  -p | --plots   Number of plots to be displayed (default=1, max=5)')
+    print('  -r | --ratio   Ratio between plot data sizes (default=4)')
+    print('  -n | --n-size  Number of data points in first graph (default=value for plot)')
     print
 
 args = sys.argv[1:]
@@ -91,19 +91,15 @@ for r in args:
             xs += [randrange(r)]
             ys += [(time() - start)*1000000]
             it += 1
-
         plt.plot(xs, ys, "ro")
         if max(ys) > my:
             my = max(ys)
         plt.ylabel("Time (mu s)")
         plt.xlabel("Value")
-    if all_plots != []:
-        for p in all_plots:
-            p.axis([-r*0.05,(r-1)*1.05,-my*0.05,my*1.05])
-    else:
-        plt.axis([-r*0.05,(r-1)*1.05,-my*0.05,my*1.05])
+    for p in all_plots:
+        p.axis([-r*0.05,(r-1)*1.05,-my*0.05,my*1.05])
     f.subplots_adjust(hspace=0)
-    plt.setp([a.get_xticklabels() for a in f.axes[:-1]], visible=False)
+    # plt.setp([a.get_xticklabels() for a in f.axes[:-1]], visible=False) I forgot what this does, and can't tell the difference without it
     if save:
         try:
             plt.savefig("./data/r%d.png" % r)
