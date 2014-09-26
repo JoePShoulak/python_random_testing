@@ -104,7 +104,7 @@ for r in args:
     f.subplots_adjust(hspace=0)
     if save:
         try:
-            plt.savefig("./data/r%d.png" % r)
+            plt.savefig("./data/r%ds%d.png" % (r, plots))
         except:
             mkdir("data")
             plt.savefig("./data/r%ds%d.png" % (r, plots))
